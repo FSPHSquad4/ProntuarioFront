@@ -1,0 +1,56 @@
+export const pricingData = [
+  {
+    type: 'Plano Gratuito',
+    price: 0,
+    description: 'Destinado a profissionais individuais e hobbyistas.',
+    features: [
+      'Licença para um usuário',
+      'Acesso a alguns componentes',
+      'Acesso vitalício',
+      'Projeto único',
+      'Sem suporte',
+      'Sem atualizações',
+    ],
+  },
+  {
+    type: 'Plano Solo',
+    price: 229,
+    description: 'Destinado a profissionais individuais e hobbyistas.',
+    features: [
+      'Licença para um usuário',
+      'Acesso a todos os componentes',
+      'Acesso vitalício',
+      'Projetos ilimitados',
+      'Suporte ao cliente',
+      'Atualizações gratuitas',
+    ],
+  },
+  {
+    type: 'Plano Startup',
+    price: 399,
+    description: 'Ideal para desenvolvedores experientes e pequenas equipes.',
+    popular: true,
+    features: [
+      'Licença para 5 usuários',
+      'Acesso a todos os componentes',
+      'Acesso vitalício',
+      'Projetos ilimitados',
+      'Suporte técnico prioritário',
+      'Suporte ao cliente',
+      'Atualizações gratuitas',
+    ],
+  },
+  {
+    type: 'Plano Organização',
+    price: 799,
+    description: 'Ideal para grandes equipes e organizações',
+    features: [
+      'Licença para 25 usuários',
+      'Acesso a todos os componentes',
+      'Acesso vitalício',
+      'Projetos ilimitados',
+      'Suporte ao cliente',
+      'Atualizações gratuitas',
+    ],
+  },
+];
