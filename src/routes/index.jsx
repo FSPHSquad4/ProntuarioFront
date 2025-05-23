@@ -830,6 +830,23 @@ const layoutsRoutes = [
         element: <Detached />,
     },
 ];
+
+const CreatePatient = lazy(() => import("@/app/(patients)/apps/Create/page"));
+const PatientsPage = lazy(() => import("@/app/(patients)/apps/page"));
+
+const patientRoutes = [
+    {
+        name: "List Patients",
+        path: "/patients/",
+        element: <PatientsPage />,
+    },
+    {
+        name: "Register Patient",
+        path: "/patients/create",
+        element: <CreatePatient />,
+    },
+];
+
 export const appRoutes = [
     ...initialRoutes,
     ...generalRoutes,
@@ -846,6 +863,7 @@ export const appRoutes = [
     ...tablesRoutes,
     // ...pricingRoutes,
     ...mapsRoutes,
+    ...patientRoutes,
 ];
 export const publicRoutes = [
     ...authRoutes,
