@@ -18,8 +18,8 @@ const PatientsCard = () => {
 
     return (
         <Row>
-            {filteredPatients.map((item, idx) => (
-                <Col xl={3} sm={6} key={idx}>
+            {filteredPatients.map((item) => (
+                <Col xl={3} sm={6} key={item.id}>
                     <Card className="text-center">
                         <CardBody>
                             <Dropdown align={"end"} className="float-end">
