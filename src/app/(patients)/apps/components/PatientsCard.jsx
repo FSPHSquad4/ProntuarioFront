@@ -43,7 +43,7 @@ const PatientsCard = () => {
                                 </DropdownMenu>
                             </Dropdown>
                             <h4 className="mt-3 mb-1">
-                                <Link to="/users/profile" className="text-dark">
+                                <Link to={`/patients/${item.id}`} className="text-dark">
                                     {item.fullName}
                                 </Link>
                             </h4>
