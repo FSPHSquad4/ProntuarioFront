@@ -135,10 +135,10 @@ export const PatientsProvider = ({ children }) => {
             }
 
             setPatients((prev) =>
-                prev.filter((patient) => patient.id !== patientId)
+                prev.filter((patient) => patient.id !== Number(patientId))
             );
             setFilteredPatients((prev) =>
-                prev.filter((patient) => patient.id !== patientId)
+                prev.filter((patient) => patient.id !== Number(patientId))
             );
             toast.success("Paciente excluído com sucesso.");
         } catch (error) {
