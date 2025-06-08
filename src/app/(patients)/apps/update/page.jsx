@@ -313,7 +313,7 @@ export default function UpdatePatientPage() {
 
                     <div className="d-flex justify-content-end">
                         <Button variant="primary" type="submit">
-                            Cadastrar
+                            Atualizar
                         </Button>
                     </div>
                 </Form>
