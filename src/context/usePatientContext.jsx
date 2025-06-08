@@ -81,12 +81,12 @@ export const PatientsProvider = ({ children }) => {
             }
             setPatients((prev) =>
                 prev.map((patient) =>
-                    patient.id === patientId ? response.data : patient
+                    patient.id === Number(patientId) ? response.data : patient
                 )
             );
             setFilteredPatients((prev) =>
                 prev.map((patient) =>
-                    patient.id === patientId ? response.data : patient
+                    patient.id === Number(patientId) ? response.data : patient
                 )
             );
             return response;
