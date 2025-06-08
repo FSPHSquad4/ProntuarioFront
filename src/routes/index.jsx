@@ -832,7 +832,8 @@ const layoutsRoutes = [
 ];
 
 const CreatePatient = lazy(() => import("@/app/(patients)/apps/Create/page"));
-const PatientsPage = lazy(() => import("@/app/(patients)/apps/page"));
+const PatientsPage = lazy(() => import("@/app/(patients)/apps/view/page"));
+const UpdatePatient = lazy(() => import("@/app/(patients)/apps/update/page"));
 
 const patientRoutes = [
     {
@@ -844,6 +845,11 @@ const patientRoutes = [
         name: "Register Patient",
         path: "/patients/create",
         element: <CreatePatient />,
+    },
+    {
+        name: "Update Patient",
+        path: "/patients/update/:id",
+        element: <UpdatePatient />,
     },
 ];
 
