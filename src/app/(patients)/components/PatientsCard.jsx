@@ -11,7 +11,7 @@ import {
     Modal,
     Button,
 } from "react-bootstrap";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePatientsContext } from "@/context/usePatientContext";
 import { formatDate } from "@/utils/date";
 import { useState } from "react";
