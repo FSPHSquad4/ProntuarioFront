@@ -847,6 +847,22 @@ const patientRoutes = [
     },
 ];
 
+const CreateProfessional = lazy(() => import("@/app/(professionals)/apps/Create/page"));
+const ProfessionalsPage = lazy(() => import("@/app/(professionals)/apps/page"));
+
+const professionalroutes = [
+    {
+        name: "List Professionals",
+        path: "/professionals/",
+        element: <ProfessionalsPage/>
+    },
+    {
+        name: "Register Professional",
+        path: "/professionals/create",
+        element: <CreateProfessional/>
+    }
+]
+
 export const appRoutes = [
     ...initialRoutes,
     ...generalRoutes,
@@ -864,6 +880,7 @@ export const appRoutes = [
     // ...pricingRoutes,
     ...mapsRoutes,
     ...patientRoutes,
+    ...professionalroutes,
 ];
 export const publicRoutes = [
     ...authRoutes,

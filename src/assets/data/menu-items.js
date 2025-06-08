@@ -23,6 +23,25 @@ export const MENU_ITEMS = [
         url: "/apps/calendar",
     },
     {
+        key: "professionals",
+        label: "Profissionais",
+        icon: "tabler:user-square-rounded",
+        children: [
+            {
+                key: "doctors-page",
+                label: "Profissionais",
+                url: "/professionals",
+                parentKey: "users",
+            },
+            {
+                key: "create-doctors",
+                label: "Criar Profissionais",
+                url: "/professionals/create",
+                parentKey: "users",
+            },
+        ],
+    },
+    {
         key: "patients",
         label: "Pacientes",
         icon: "tabler:user-square-rounded",

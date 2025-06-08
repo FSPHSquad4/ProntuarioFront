@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_TITLE } from "@/context/constants";
 import { ChatProvider } from "@/context/useChatContext";
 import { LayoutProvider } from "@/context/useLayoutContext";
 import { PatientsProvider } from "@/context/usePatientContext";
+import { ProfessionalsProvider } from "../../context/useProfessionalsContext";
 // import { SessionProvider } from 'next-auth/react'
 // const LayoutProvider = lazy(() => import('@/context/useLayoutContext'))
 
@@ -37,10 +38,12 @@ const AppProvidersWrapper = ({ children }) => {
         <LayoutProvider>
             <ChatProvider>
                 <PatientsProvider>
-                    {/* <NotificationProvider> */}
-                    {children}
-                    <ToastContainer theme="colored" />
-                    {/* </NotificationProvider> */}
+                    <ProfessionalsProvider>
+                        {/* <NotificationProvider> */}
+                        {children}
+                        <ToastContainer theme="colored" />
+                        {/* </NotificationProvider> */}
+                    </ProfessionalsProvider>
                 </PatientsProvider>
             </ChatProvider>
         </LayoutProvider>
