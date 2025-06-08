@@ -92,7 +92,7 @@ export default function UpdatePatientPage() {
             }
 
             toast.success("Paciente atualizado com sucesso!");
-            setPatientData({});
+            setPatientData(initialPatientData);
             navigate("/patients");
         } catch (error) {
             const errorMsg =
