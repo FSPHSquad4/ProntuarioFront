@@ -15,7 +15,7 @@ api.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         } else {
-            if (window.location.pathname !== "fsph/auth/login") {
+            if (window.location.pathname !== "/fsph/auth/login") {
                 window.location.href = "/fsph/auth/login";
             }
         }
