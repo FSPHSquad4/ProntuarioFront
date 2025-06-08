@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_TITLE } from "@/context/constants";
 import { ChatProvider } from "@/context/useChatContext";
 import { LayoutProvider } from "@/context/useLayoutContext";
 import { PatientsProvider } from "@/context/usePatientContext";
+import { AuthProvider } from "@/context/useAuthContext";
 // import { SessionProvider } from 'next-auth/react'
 // const LayoutProvider = lazy(() => import('@/context/useLayoutContext'))
 
@@ -33,18 +34,18 @@ const AppProvidersWrapper = ({ children }) => {
         };
     }, []);
     return (
-        // <SessionProvider>
-        <LayoutProvider>
-            <ChatProvider>
-                <PatientsProvider>
-                    {/* <NotificationProvider> */}
-                    {children}
-                    <ToastContainer theme="colored" />
-                    {/* </NotificationProvider> */}
-                </PatientsProvider>
-            </ChatProvider>
-        </LayoutProvider>
-        //  </SessionProvider>
+        <AuthProvider>
+            <LayoutProvider>
+                <ChatProvider>
+                    <PatientsProvider>
+                        {/* <NotificationProvider> */}
+                        {children}
+                        <ToastContainer theme="colored" />
+                        {/* </NotificationProvider> */}
+                    </PatientsProvider>
+                </ChatProvider>
+            </LayoutProvider>
+        </AuthProvider>
     );
 };
 export default AppProvidersWrapper;
