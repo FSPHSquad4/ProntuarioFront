@@ -5,7 +5,7 @@ import { Card, Col, Form, Row } from "react-bootstrap";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { Link } from "react-router-dom";
 import { currentYear } from "@/context/constants";
-import { useAuth } from "../../../../context/useAuthContext";
+import { useAuth } from "@/context/useAuthContext";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
