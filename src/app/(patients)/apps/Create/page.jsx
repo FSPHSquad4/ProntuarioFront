@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
+
 import ComponentContainerCard from "@/components/ComponentContainerCard";
 import MaskedInput from "@/components/MaskedInput";
-import { toast } from "react-toastify";
-import { api } from "@/services";
-import { formatDate } from "@/utils/date";
-import { useNavigate } from "react-router-dom";
+import { usePatientsContext } from "@/context/usePatientContext";
 
-export default function RegisterPage() {
+export default function CreatePatientPage() {
     const initialPatientData = {
         fullName: "",
         cpf: "",
@@ -20,7 +20,10 @@ export default function RegisterPage() {
     const [formValidation, setFormValidation] = useState(false);
     const [hasCompanion, setHasCompanion] = useState(false);
     const [patientData, setPatientData] = useState(initialPatientData);
+
     const navigate = useNavigate();
+
+    const { createPatient } = usePatientsContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,29 +37,24 @@ export default function RegisterPage() {
                 return;
             }
 
-            const response = await api.post(
-                "/patients/",
-                {
-                    ...patientData,
-                    birthDate: formatDate(patientData.birthDate, "dd/MM/yyyy"),
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
-                }
-            );
+            const response = await createPatient(patientData);
 
-            if (response.status === 201) {
-                toast.success("Paciente cadastrado com sucesso!");
+            console.log("Response:", response);
 
-                setPatientData(initialPatientData);
-                setFormValidation(false);
+            if (response.status !== 201 || !response.data) {
+                toast.error(
+                    `${response.status}: Não foi possível cadastrar o paciente.`
+                );
 
-                navigate("/patients");
+                return;
             }
+
+            toast.success("Paciente cadastrado com sucesso!");
+
+            setPatientData(initialPatientData);
+            setFormValidation(false);
+
+            navigate("/patients");
         } catch (error) {
             const errorMsg =
                 error.response?.data?.message ||

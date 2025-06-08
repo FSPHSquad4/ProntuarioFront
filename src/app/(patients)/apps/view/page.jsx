@@ -3,27 +3,19 @@ import { Card, CardHeader, Col, Pagination, Row } from "react-bootstrap";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { useNavigate } from "react-router-dom";
 import { usePatientsContext } from "@/context/usePatientContext";
-import PatientsCard from "./components/PatientsCard";
+import PatientsCard from "../../components/PatientsCard";
 import { useEffect } from "react";
 
 const PatientsPage = () => {
-    const {
-        patients,
-        filteredPatients,
-        loading,
-        getAllPatients,
-        filterPatients,
-    } = usePatientsContext();
-
-    useEffect(() => {
-        getAllPatients();
-    }, [location]);
+    const { patients, filteredPatients, filterPatients, fetchPatients } =
+        usePatientsContext();
 
     const handleSearch = (e) => {
         filterPatients(e.target.value);
     };
 
     const navigate = useNavigate();
+    // Verifica se os dados ainda estão carregando
     return (
         <>
             <PageBreadcrumb title="Pacientes" />
