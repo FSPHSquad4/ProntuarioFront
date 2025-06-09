@@ -1,4 +1,5 @@
 import axios from "axios";
+import SecureStorage from "react-secure-storage";
 
 // Criação da instância
 const api = axios.create({
@@ -8,23 +9,23 @@ const api = axios.create({
 // Interceptor de requisição
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("auth_user")
-            ? JSON.parse(localStorage.getItem("auth_user")).token
-            : null;
+        const token = SecureStorage.getItem("auth_token");
+        const isLoginPage = window.location.pathname === "/fsph/auth/login";
+
+        if (!token && !isLoginPage) {
+            window.location.href = "/fsph/auth/login";
+            return Promise.reject(
+                new Error("Token não encontrado. Redirecionando para login.")
+            );
+        }
 
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-        } else {
-            if (window.location.pathname !== "/fsph/auth/login") {
-                window.location.href = "/fsph/auth/login";
-            }
         }
 
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export { api };
