@@ -1,73 +1,28 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import logoDark from "@/assets/images/logo-dark.png";
 import logo from "@/assets/images/logo.png";
 import { Card, Col, Form, Row } from "react-bootstrap";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { currentYear } from "@/context/constants";
-import { api } from "../../../../services";
-import { Exception } from "sass";
+import { useAuth } from "@/context/useAuthContext";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
-    // Get
-    // const [patients, setPatients] = useState([]);
-
-    // useEffect(() => {
-    //     (async function handleSubmit() {
-    //         const { data } = await api.get("/patients/");
-
-    //         setPatients(data);
-    //     })();
-    // }, []);
-
-    // Post
-
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
+    const { login } = useAuth();
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const trimmedUsername = username.trim();
-            const trimmedPassword = password.trim();
 
-            if (!trimmedUsername || !trimmedPassword) {
-                throw new Error({
-                    message: "Preencha todos os campos.",
-                    status: 400,
-                });
-            }
-
-            const response = await api.post("/auth/login", {
-                username: trimmedUsername,
-                password: trimmedPassword,
-            });
-
-            const { token } = response.data;
-
-            if (!token) {
-                throw new Error({
-                    message: "Validação do usuário falhou.",
-                    status: 400,
-                });
-            }
-
-            localStorage.setItem("token", token);
-
-            toast.success("Login realizado com sucesso!");
-
-            navigate("/dashboard");
-        } catch (error) {
-            console.log(error);
-            const errorMsg =
-                error.response?.data?.message ||
-                error.message ||
-                "Erro desconhecido ao logar";
-            toast.error(`${error.status}: Erro ao fazer login!`);
+        // Validação simples dos campos
+        if (!email || !password) {
+            toast.error("Por favor, preencha todos os campos.");
+            return;
         }
+        await login({ email, password });
     };
 
     return (
@@ -108,17 +63,17 @@ const LoginPage = () => {
                                 <div className="mb-3">
                                     <label
                                         className="form-label"
-                                        htmlFor="login-username"
+                                        htmlFor="login-email"
                                     >
-                                        Username
+                                        Email
                                     </label>
                                     <Form.Control
-                                        type="text"
-                                        id="login-username"
-                                        name="username"
-                                        placeholder="Digite seu username"
+                                        type="email"
+                                        id="login-email"
+                                        name="email"
+                                        placeholder="Digite seu email"
                                         onChange={(e) =>
-                                            setUsername(e.target.value)
+                                            setEmail(e.target.value)
                                         }
                                     />
                                 </div>
@@ -168,15 +123,6 @@ const LoginPage = () => {
                                     </button>
                                 </div>
                             </Form>
-                            <p className="text-muted fs-14 mb-0">
-                                Não tem uma conta? &nbsp;
-                                <Link
-                                    to="/auth/register"
-                                    className="fw-semibold text-danger ms-1"
-                                >
-                                    Cadastrar-se!
-                                </Link>
-                            </p>
                         </Card>
                         <p className="mt-4 text-center mb-0">
                             {currentYear} © Fundação de Saúde Parreiras Horta
