@@ -15,8 +15,8 @@ export default function UpdatePatientPage() {
         birthDate: "",
         gender: "",
         maritalStatus: "",
-        companionName: "",
-        companionCpf: "",
+        companionName: null,
+        companionCpf: null,
     };
 
     const { id: patientId } = useParams();
@@ -47,8 +47,8 @@ export default function UpdatePatientPage() {
                         : "",
                     gender: foundPatient.gender || "",
                     maritalStatus: foundPatient.maritalStatus || "",
-                    companionName: foundPatient.companionName || "",
-                    companionCpf: foundPatient.companionCpf || "",
+                    companionName: foundPatient.companionName || null,
+                    companionCpf: foundPatient.companionCpf || null,
                 });
 
                 setHasCompanion(
@@ -261,8 +261,8 @@ export default function UpdatePatientPage() {
                                         if (!e.target.checked) {
                                             setPatientData({
                                                 ...patientData,
-                                                companionName: "",
-                                                companionCpf: "",
+                                                companionName: null,
+                                                companionCpf: null,
                                             });
                                         }
                                     }}
