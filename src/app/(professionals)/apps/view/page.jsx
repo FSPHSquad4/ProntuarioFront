@@ -3,8 +3,7 @@ import { Card, CardHeader, Col, Pagination, Row } from "react-bootstrap";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { useNavigate } from "react-router-dom";
 import { useProfessionalsContext } from "@/context/useProfessionalsContext";
-import ProfessionalsCard from "./components/ProfessionalsCard";
-import { useEffect } from "react";
+import ProfessionalsCard from "../../components/ProfessionalsCard";
 
 const ProfessionalsPage = () => {
     const { professionals, filteredProfessionals, filterProfessionals } =
