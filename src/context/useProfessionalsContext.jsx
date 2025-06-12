@@ -1,58 +1,83 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { api } from "@/services";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "./useAuthContext";
 
-// Criação do contexto
 export const ProfessionalsContext = createContext();
 
-// Hook para consumir o contexto
 export const useProfessionalsContext = () => useContext(ProfessionalsContext);
 
-// Provider
 export const ProfessionalsProvider = ({ children }) => {
-    const [professionals, setProfessionals] = useState([]); // Corrigido para começar com letra minúscula
-    const [filteredProfessionals, setfilteredProfessionals] = useState([]); // Corrigido para começar com letra minúscula e padronizar nomenclatura
+    const [professionals, setProfessionals] = useState([]);
+    const [filteredProfessionals, setFilteredProfessionals] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { isAuthenticated } = useAuth();
+    const location = useLocation();
 
-    // Função para buscar todos os médicos
-    const getAllProfessionals = async () => {
+    const fetchProfessionals = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get("/professionals/", {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
-
+            const { data } = await api.get(`/professional`);
             setProfessionals(data);
-            setfilteredProfessionals(data); // Inicializa a lista filtrada igual à completa
+            setFilteredProfessionals(data);
         } catch (error) {
-            console.error("Erro ao buscar médicos:", error);
-            toast.error("Erro ao buscar médicos.");
+            const errorMessage =
+                error?.response?.data?.message ||
+                "Erro ao buscar profissionais.";
+            console.error(errorMessage);
+            toast.error(errorMessage);
             setProfessionals([]);
-            setfilteredProfessionals([]);
+            setFilteredProfessionals([]);
         } finally {
             setLoading(false);
         }
     };
 
-    // Função para filtrar médicos
-    const filterProfessionals = (searchTerm) => {
-        if (!searchTerm) {
-            setfilteredProfessionals(Professionals); // Se limpar, volta a lista completa
+    // const deleteProfessional = async (id) => {
+    //     setLoading(true);
+    //     try {
+    //         await api.delete(`/professional/${id}`);
+    //         toast.success("Profissional deletado com sucesso.");
+    //         setProfessionals((prev) => prev.filter((prof) => prof.id !== id));
+    //         setFilteredProfessionals((prev) =>
+    //             prev.filter((prof) => prof.id !== id)
+    //         );
+    //     } catch (error) {
+    //         const errorMessage =
+    //             error?.response?.data?.message ||
+    //             "Erro ao deletar profissional.";
+    //         console.error(errorMessage);
+    //         toast.error(errorMessage);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const filterProfessionals = (criteria) => {
+        if (!criteria || Object.keys(criteria).length === 0) {
+            setFilteredProfessionals(professionals);
             return;
         }
 
-        const lowerSearch = searchTerm.toLowerCase().trim();
+        const filtered = professionals.filter((professional) => {
+            return Object.entries(criteria).every(([key, value]) => {
+                return professional[key]
+                    ?.toLowerCase()
+                    .includes(value.toLowerCase());
+            });
+        });
 
-        const filtered = Professionals.filter(
-            (professional) =>
-                professional.fullName?.toLowerCase().includes(lowerSearch) ||
-                professional.cpf?.toLowerCase().includes(lowerSearch)
-        );
-
-        setfilteredProfessionals(filtered);
+        setFilteredProfessionals(filtered);
     };
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            toast.error("Acesso negado. Você precisa estar autenticado.");
+            return;
+        }
+        fetchProfessionals();
+    }, [location.pathname]);
 
     return (
         <ProfessionalsContext.Provider
@@ -61,8 +86,9 @@ export const ProfessionalsProvider = ({ children }) => {
                 filteredProfessionals,
                 setProfessionals,
                 loading,
-                getAllProfessionals,
                 filterProfessionals,
+                // deleteProfessional,
+                fetchProfessionals,
             }}
         >
             {children}
