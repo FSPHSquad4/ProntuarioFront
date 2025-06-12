@@ -14,8 +14,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useProfessionalsContext } from "@/context/useProfessionalsContext";
 import { useState } from "react";
-import { StringSchema } from "yup";
-
 const ProfessionalsCard = () => {
     const { filteredProfessionals, deleteProfessional } =
         useProfessionalsContext();
