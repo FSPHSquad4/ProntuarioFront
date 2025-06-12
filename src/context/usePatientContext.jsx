@@ -3,6 +3,7 @@ import { formatDate } from "@/utils/date";
 import { api } from "@/services";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "./useAuthContext";
 
 export const PatientsContext = createContext();
 export const usePatientsContext = () => useContext(PatientsContext);
@@ -11,9 +12,9 @@ export const PatientsProvider = ({ children }) => {
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { user, isAuthenticated } = useAuth();
     const location = useLocation();
 
-    // Fetch all patients
     const fetchPatients = async () => {
         setLoading(true);
         try {
@@ -33,11 +34,14 @@ export const PatientsProvider = ({ children }) => {
 
     // Fetch patients when route changes to /patients
     useEffect(() => {
-        if (location.pathname.includes("/patients")) {
+        if (
+            (isAuthenticated && location.pathname.includes("/patients")) ||
+            location.pathname.includes("/booking")
+        ) {
             fetchPatients();
             console.log("Fetching patients data...");
         }
-    }, [location.pathname]);
+    }, [user, location.pathname]);
 
     // Filter patients by name or CPF
     const filterPatients = (searchTerm) => {
