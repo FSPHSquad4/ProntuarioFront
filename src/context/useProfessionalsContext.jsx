@@ -55,7 +55,7 @@ export const ProfessionalsProvider = ({ children }) => {
     // };
 
     const filterProfessionals = (criteria) => {
-        if (!criteria || Object.keys(criteria).length === 0) {
+        if (!criteria || typeof criteria !== 'object' || Object.keys(criteria).length === 0) {
             setFilteredProfessionals(professionals);
             return;
         }
