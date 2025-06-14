@@ -854,7 +854,7 @@ const patientRoutes = [
 ];
 
 const CreateProfessional = lazy(() =>
-    import("@/app/(professionals)/apps/create/page")
+    import("@/app/(professionals)/apps/Create/page")
 );
 const ProfessionalsPage = lazy(() =>
     import("@/app/(professionals)/apps/view/page")

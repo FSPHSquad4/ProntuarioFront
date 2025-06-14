@@ -1,10 +1,10 @@
 export const MENU_ITEMS = [
-    {
-        key: "dashboard",
-        label: "Gráficos",
-        icon: "tabler:dashboard",
-        url: "/dashboard",
-    },
+    // {
+    //     key: "dashboard",
+    //     label: "Gráficos",
+    //     icon: "tabler:dashboard",
+    //     url: "/dashboard",
+    // },
     {
         key: "professionals",
         label: "Profissionais",
@@ -51,12 +51,12 @@ export const MENU_ITEMS = [
     },
 ];
 export const HORIZONTAL_MENU_ITEM = [
-    {
-        key: "dashboard",
-        label: "Gráficos",
-        icon: "tabler:dashboard",
-        url: "/dashboard",
-    },
+    // {
+    //     key: "dashboard",
+    //     label: "Gráficos",
+    //     icon: "tabler:dashboard",
+    //     url: "/dashboard",
+    // },
     {
         key: "apps",
         label: "Aplicativos",
