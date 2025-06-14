@@ -854,9 +854,11 @@ const patientRoutes = [
 ];
 
 const CreateProfessional = lazy(() =>
-    import("@/app/(professionals)/apps/Create/page")
+    import("@/app/(professionals)/apps/create/page")
 );
-const ProfessionalsPage = lazy(() => import("@/app/(professionals)/apps/page"));
+const ProfessionalsPage = lazy(() =>
+    import("@/app/(professionals)/apps/view/page")
+);
 
 const professionalRoutes = [
     {
@@ -880,7 +882,6 @@ const bookingsRoutes = [
         element: <BookingsPage />,
     },
 ];
-
 export const appRoutes = [
     ...initialRoutes,
     ...generalRoutes,

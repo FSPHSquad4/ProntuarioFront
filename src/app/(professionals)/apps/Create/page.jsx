@@ -1,59 +1,63 @@
-import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import ComponentContainerCard from "@/components/ComponentContainerCard";
-import MaskedInput from "@/components/MaskedInput";
 import { toast } from "react-toastify";
 import { api } from "@/services";
-import { formatDate } from "@/utils/date";
 import { useNavigate } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const professionalSchema = yup.object().shape({
+    name: yup
+        .string()
+        .min(3, "O nome deve ter pelo menos 3 caracteres.")
+        .required("Por favor, insira o nome completo."),
+    email: yup
+        .string()
+        .email("Por favor, insira um email válido.")
+        .min(3, "O email deve ter pelo menos 3 caracteres.")
+        .required("Email é obrigatório."),
+    password: yup
+        .string()
+        .min(6, "A senha deve ter no mínimo 6 caracteres.")
+        .required("Senha é obrigatória."),
+    role: yup.string().required("Por favor, selecione o papel."),
+    specialty: yup.string().required("Por favor, insira a especialidade."),
+    professionalLicense: yup
+        .string()
+        .required("Por favor, insira o número da licença profissional."),
+});
 
 export default function RegisterPage() {
     const initialProfessionalData = {
-        fullName: "",
-        register: "",
-        profession: "",
-        contact: "",
-        availability: "",
-        birthDate: "",
-        gender: "",
+        name: "",
+        email: "",
+        password: "",
+        role: "PROFESSIONAL",
+        specialty: "",
+        professionalLicense: "",
     };
-    const [formValidation, setFormValidation] = useState(false);
-    const [ProfessionalData, setProfessionalData] = useState(initialProfessionalData);
+
+    const {
+        handleSubmit,
+        control,
+        setValue,
+        reset,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(professionalSchema),
+        defaultValues: initialProfessionalData,
+    });
+
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const form = e.currentTarget;
-
+    const onSubmit = async (data) => {
         try {
-            if (form.checkValidity() === false) {
-                e.stopPropagation();
-                setFormValidation(true);
-                toast.error("Preencha todos os campos obrigatórios.");
-                return;
-            }
-
-            const response = await api.post(
-                "/professionals/",
-                {
-                    ...ProfessionalData,
-                    birthDate: formatDate(ProfessionalsData.birthDate, "dd/MM/yyyy"),
-                },
-                {
-                     headers: {
-                         Authorization: `Bearer ${localStorage.getItem(
-                             "token"
-                         )}`,
-                     },
-                }
-            )
+            const response = await api.post("/professional/", { ...data });
 
             if (response.status === 201) {
                 toast.success("Profissional cadastrado com sucesso!");
-
-                setProfessionalsData(initialProfessionalsData);
-                setFormValidation(false);
-
+                reset();
                 navigate("/professionals");
             }
         } catch (error) {
@@ -72,200 +76,141 @@ export default function RegisterPage() {
             title="Cadastrar Profissional"
             description="Preencha os dados do profissional"
         >
-
-          
-                {/*NOME COMPLETO*/}
-
-
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit(onSubmit)}>
                 <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group>
                             <Form.Label>Nome Completo</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={ProfessionalData.fullName}
-                                onChange={(e) =>
-                                    setProfessionalData({
-                                        ...ProfessionalData,
-                                        fullName: e.target.value,
-                                    })
-                                }
-                                required
-                                isInvalid={
-                                    formValidation &&
-                                    !ProfessionalData.fullName.trim()
-                                }
+                            <Controller
+                                name="name"
+                                control={control}
+                                render={({ field }) => (
+                                    <Form.Control
+                                        {...field}
+                                        type="text"
+                                        isInvalid={!!errors.name}
+                                    />
+                                )}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Por favor, insira o nome completo.
+                                {errors.name?.message}
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
 
-
-                                {/*CPF*/}
-
-
                     <Col md={6}>
                         <Form.Group>
-                            <Form.Label>CPF</Form.Label>
-                            <MaskedInput
-                                mask="000.000.000-00"
-                                placeholder="000.000.000-00"
-                                value={ProfessionalData.cpf}
-                                onChange={(e) =>
-                                    setProfessionalData({
-                                        ...ProfessionalData,
-                                        cpf: e.target.unmaskedValue,
-                                    })
-                                }
-                                required
-                                isInvalid={
-                                    formValidation &&
-                                    ProfessionalData.cpf.length !== 11
-                                } // CPF sem máscara tem 11 dígitos
+                            <Form.Label>Email</Form.Label>
+                            <Controller
+                                name="email"
+                                control={control}
+                                render={({ field }) => (
+                                    <Form.Control
+                                        {...field}
+                                        type="email"
+                                        isInvalid={!!errors.email}
+                                    />
+                                )}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Por favor, insira um CPF válido.
+                                {errors.email?.message}
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
-
-
-                            {/*BIRTH DATE*/}
-
 
                 <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group>
-                            <Form.Label>Data de Nascimento</Form.Label>
-                            <Form.Control
-                                type="date"
-                                value={ProfessionalData.birthDate}
-                                onChange={(e) =>
-                                    setProfessionalData({
-                                        ...ProfessionalData,
-                                        birthDate: e.target.value,
-                                    })
-                                }
-                                required
-                                isInvalid={
-                                    formValidation && !ProfessionalData.birthDate
-                                }
+                            <Form.Label>Senha</Form.Label>
+                            <Controller
+                                name="password"
+                                control={control}
+                                render={({ field }) => (
+                                    <Form.Control
+                                        {...field}
+                                        type="password"
+                                        isInvalid={!!errors.password}
+                                    />
+                                )}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Por favor, insira a data de nascimento.
+                                {errors.password?.message}
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
 
-
-                              {/*GÊNERO*/}
-
-
-                    <Col md={3}>
+                    <Col md={6}>
                         <Form.Group>
-                            <Form.Label>Gênero</Form.Label>
-                            <Form.Select
-                                value={ProfessionalData.gender}
-                                onChange={(e) =>
-                                    setProfessionalData({
-                                        ...ProfessionalData,
-                                        gender: e.target.value,
-                                    })
-                                }
-                                required
-                                isInvalid={
-                                    formValidation && !ProfessionalData.gender
-                                }
-                            >
-                                <option value="">Selecione</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
-                                <option value="O">Outro</option>
-                            </Form.Select>
+                            <Form.Label>Papel</Form.Label>
+                            <Controller
+                                name="role"
+                                control={control}
+                                render={({ field }) => (
+                                    <Form.Control
+                                        {...field}
+                                        type="text"
+                                        isInvalid={!!errors.role}
+                                        readOnly
+                                    />
+                                )}
+                            />
                             <Form.Control.Feedback type="invalid">
-                                Por favor, selecione um gênero.
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Col>
-
-
-                                {/*ESPECIALIDADE*/}
-
-
-                    <Col md={3}>
-                        <Form.Group>
-                            <Form.Label>Profissão</Form.Label>
-                            <Form.Select
-                                value={ProfessionalData.speciality}
-                                onChange={(e) =>
-                                    setProfessionalData({
-                                        ...ProfessionalData,
-                                        speciality: e.target.value,
-                                    })
-                                }
-                                required
-                                isInvalid={
-                                    formValidation && !ProfessionalData.profession
-                                }
-                            >
-                                <option value="">Selecione</option>
-                                <option value="M">Médico</option>
-                                <option value="E">Enfermeiro(a)</option>
-                                <option value="P">Pediatra</option>
-                                <option value="F">Fisioterapeuta</option>
-                                <option value="O">Odontologista</option>
-                                <option value="Ps">Psicólogo</option>
-                                <option value="F">Farmacêutico</option>
-                                <option value="A">Assistente Social</option>
-                            </Form.Select>
-                            <Form.Control.Feedback type="invalid">
-                                Por favor, selecione uma profissão.
+                                {errors.role?.message}
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
 
-
-                                {/*CONTATO*/}
-
-                <Row className="mb-4">
-                                <Col md={2}>
+                <Row className="mb-3">
+                    <Col md={6}>
                         <Form.Group>
-                            <Form.Label>Contato</Form.Label>
-                            <MaskedInput
-                                mask="(00) 9 0000-0000"
-                                placeholder="(79) 9 0000-0000"
-                                value={ProfessionalData.cpf}
-                                onChange={(e) =>
-                                    setProfessionalData({
-                                        ...ProfessionalData,
-                                        contact: e.target.unmaskedValue,
-                                    })
-                                }
-                                required
-                                isInvalid={
-                                    formValidation &&
-                                    ProfessionalData.contact.length !== 11
-                                } // Número sem máscara tem 11 dígitos
+                            <Form.Label>Especialidade</Form.Label>
+                            <Controller
+                                name="specialty"
+                                control={control}
+                                render={({ field }) => (
+                                    <Form.Select
+                                        {...field}
+                                        type="text"
+                                        isInvalid={!!errors.specialty}
+                                    >
+                                        <option value="">Selecione...</option>
+                                        <option value="Médico(a)">
+                                            Médico(a)
+                                        </option>
+                                        <option value="Enfermeiro(a)">
+                                            Enfermeiro(a)
+                                        </option>
+                                    </Form.Select>
+                                )}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Por favor, insira um Número válido.
+                                {errors.specialty?.message}
                             </Form.Control.Feedback>
                         </Form.Group>
-                    </Col>                                
+                    </Col>
+
+                    <Col md={6}>
+                        <Form.Group>
+                            <Form.Label>Licença Profissional</Form.Label>
+                            <Controller
+                                name="professionalLicense"
+                                control={control}
+                                render={({ field }) => (
+                                    <Form.Control
+                                        {...field}
+                                        type="text"
+                                        isInvalid={!!errors.professionalLicense}
+                                    />
+                                )}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.professionalLicense?.message}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Col>
                 </Row>
-            
-
-
-                                {/*DISPONIBILIDADE*/}
-
-
-                                
-                
 
                 <div className="d-flex justify-content-end">
                     <Button variant="primary" type="submit">

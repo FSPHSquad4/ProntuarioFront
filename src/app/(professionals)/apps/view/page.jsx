@@ -3,21 +3,11 @@ import { Card, CardHeader, Col, Pagination, Row } from "react-bootstrap";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import { useNavigate } from "react-router-dom";
 import { useProfessionalsContext } from "@/context/useProfessionalsContext";
-import ProfessionalsCard from "./components/ProfessionalsCard";
-import { useEffect } from "react";
+import ProfessionalsCard from "../../components/ProfessionalsCard";
 
 const ProfessionalsPage = () => {
-    const {
-        professionals,
-        filteredProfessionals,
-        loading,
-        getAllProfessionals,
-        filterProfessionals,
-    } = useProfessionalsContext();
-
-    useEffect(() => {
-        getAllProfessionals();
-    }, [location]);
+    const { professionals, filteredProfessionals, filterProfessionals } =
+        useProfessionalsContext();
 
     const handleSearch = (e) => {
         filterProfessionals(e.target.value);
@@ -34,7 +24,9 @@ const ProfessionalsPage = () => {
                             <a
                                 href=""
                                 className="btn btn-danger"
-                                onClick={() => navigate("/Professionals/create")}
+                                onClick={() =>
+                                    navigate("/Professionals/create")
+                                }
                             >
                                 <IconifyIcon
                                     icon="tabler:circle-plus"
@@ -100,11 +92,11 @@ const ProfessionalsPage = () => {
                 <Col sm={6}>
                     <div className="float-sm-end">
                         <Pagination className="pagination-rounded mb-sm-0">
-                            <Pagination.Item className=" disabled">
+                            <Pagination.Item className="disabled">
                                 <IconifyIcon icon="tabler:chevron-left" />
                             </Pagination.Item>
                             <Pagination.Item className="">1</Pagination.Item>
-                            <Pagination.Item className=" active">
+                            <Pagination.Item className="active">
                                 2
                             </Pagination.Item>
                             <Pagination.Item className="">3</Pagination.Item>
