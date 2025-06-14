@@ -3,7 +3,7 @@ import SecureStorage from "react-secure-storage";
 
 // Criação da instância
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: "https://afraid-tips-sink.loca.lt/",
 });
 
 // Interceptor de requisição
