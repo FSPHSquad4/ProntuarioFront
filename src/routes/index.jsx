@@ -830,6 +830,58 @@ const layoutsRoutes = [
         element: <Detached />,
     },
 ];
+
+const CreatePatient = lazy(() => import("@/app/(patients)/apps/Create/page"));
+const PatientsPage = lazy(() => import("@/app/(patients)/apps/view/page"));
+const UpdatePatient = lazy(() => import("@/app/(patients)/apps/update/page"));
+
+const patientRoutes = [
+    {
+        name: "List Patients",
+        path: "/patients/",
+        element: <PatientsPage />,
+    },
+    {
+        name: "Register Patient",
+        path: "/patients/create",
+        element: <CreatePatient />,
+    },
+    {
+        name: "Update Patient",
+        path: "/patients/update/:id",
+        element: <UpdatePatient />,
+    },
+];
+
+const CreateProfessional = lazy(() =>
+    import("@/app/(professionals)/apps/create/page")
+);
+const ProfessionalsPage = lazy(() =>
+    import("@/app/(professionals)/apps/view/page")
+);
+
+const professionalRoutes = [
+    {
+        name: "List Professionals",
+        path: "/professionals/",
+        element: <ProfessionalsPage />,
+    },
+    {
+        name: "Register Professional",
+        path: "/professionals/create",
+        element: <CreateProfessional />,
+    },
+];
+
+const BookingsPage = lazy(() => import("@/app/(bookings)/apps/view/page"));
+
+const bookingsRoutes = [
+    {
+        name: "List Bookings",
+        path: "/bookings/",
+        element: <BookingsPage />,
+    },
+];
 export const appRoutes = [
     ...initialRoutes,
     ...generalRoutes,
@@ -846,6 +898,9 @@ export const appRoutes = [
     ...tablesRoutes,
     // ...pricingRoutes,
     ...mapsRoutes,
+    ...patientRoutes,
+    ...professionalRoutes,
+    ...bookingsRoutes,
 ];
 export const publicRoutes = [
     ...authRoutes,
