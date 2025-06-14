@@ -3,6 +3,7 @@ import { formatDate } from "@/utils/date";
 import { api } from "@/services";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "./useAuthContext";
 
 export const PatientsContext = createContext();
 export const usePatientsContext = () => useContext(PatientsContext);
@@ -11,6 +12,7 @@ export const PatientsProvider = ({ children }) => {
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { isAuthenticated } = useAuth();
     const location = useLocation();
 
     // Fetch all patients
@@ -33,10 +35,12 @@ export const PatientsProvider = ({ children }) => {
 
     // Fetch patients when route changes to /patients
     useEffect(() => {
-        if (location.pathname.includes("/patients")) {
-            fetchPatients();
-            console.log("Fetching patients data...");
+        if (!isAuthenticated) {
+            toast.error("Acesso negado. Você precisa estar autenticado.");
+            return;
         }
+        fetchPatients();
+        console.log("Fetching patients data...");
     }, [location.pathname]);
 
     // Filter patients by name or CPF
