@@ -13,9 +13,9 @@ export const PatientsProvider = ({ children }) => {
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [loading, setLoading] = useState(false);
     const { isAuthenticated } = useAuth();
+
     const location = useLocation();
 
-    // Fetch all patients
     const fetchPatients = async () => {
         setLoading(true);
         try {
