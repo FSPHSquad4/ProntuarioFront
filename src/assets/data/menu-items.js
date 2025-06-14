@@ -61,6 +61,25 @@ export const MENU_ITEMS = [
         ],
     },
     {
+        key: "bookings",
+        label: "Agendamentos",
+        icon: "tabler:calendar-event",
+        children: [
+            {
+                key: "bookings-page",
+                label: "Agendamentos",
+                url: "/bookings",
+                parentKey: "bookings",
+            },
+            {
+                key: "create-booking",
+                label: "Criar Agendamento",
+                url: "/bookings/create",
+                parentKey: "bookings",
+            },
+        ],
+    },
+    {
         key: "email",
         label: "Email",
         icon: "tabler:mailbox",

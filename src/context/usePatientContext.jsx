@@ -12,7 +12,8 @@ export const PatientsProvider = ({ children }) => {
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
+
     const location = useLocation();
 
     const fetchPatients = async () => {
@@ -34,14 +35,13 @@ export const PatientsProvider = ({ children }) => {
 
     // Fetch patients when route changes to /patients
     useEffect(() => {
-        if (
-            (isAuthenticated && location.pathname.includes("/patients")) ||
-            location.pathname.includes("/booking")
-        ) {
-            fetchPatients();
-            console.log("Fetching patients data...");
+        if (!isAuthenticated) {
+            toast.error("Acesso negado. Você precisa estar autenticado.");
+            return;
         }
-    }, [user, location.pathname]);
+        fetchPatients();
+        console.log("Fetching patients data...");
+    }, [location.pathname]);
 
     // Filter patients by name or CPF
     const filterPatients = (searchTerm) => {
